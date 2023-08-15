@@ -200,19 +200,38 @@ bindsym $mod+r mode "resize"
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-bar {
-    position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
-}
-
+#bar {
+#    position top
+#
+#    # When the status_command prints a new line to stdout, swaybar updates.
+#    # The default just shows the current date and time.
+#    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+#
+#    colors {
+#        statusline #ffffff
+#        background #323232
+#        inactive_workspace #32323200 #32323200 #5c5c5c
+#    }
+#}
 include /etc/sway/config.d/*
 exec fcitx5
+exec waybar
+exec /usr/share/sway/scripts/inactive-windows-transparency.py --opacity 0.8
+exec swayidle -w \
+  timeout 300 'dm-tool lock' \
+  timeout 1200 'systemctl suspend'
+
+bindsym $mod+Shift+p exec dm-tool lock
+default_border normal
+default_floating_border none
+font pango:monospace 0
+titlebar_padding 1
+titlebar_border_thickness 0
+
+# アクティブウィンドウのスクリーンショット
+bindsym Print+Shift+2 exec /usr/share/sway/scripts/grimshot --notify save window $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+# 全画面のスクリーンショット
+bindsym Print+Shift+3 exec /usr/share/sway/scripts/grimshot --notify save output  $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+# 選択した範囲のスクリーンショット
+bindsym Print+Shift+4 exec /usr/share/sway/scripts/grimshot --notify save area  $HOME/Downloads/screenshot_$(date "+%y%m%d%H%M%S").png
+output "*" background /home/cotton/Downloads/pxfuel.jpg fill
